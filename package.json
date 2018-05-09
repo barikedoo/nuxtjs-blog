@@ -1,0 +1,22 @@
+{
+  "name": "nuxtjs-blog",
+  "version": "1.0.0",
+  "description": "Small blog using Nuxt.js and Vuetify",
+  "author": "Vyacheslav Kivaev",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^1.0.0",
+    "vuetify": "^0.17.3"
+  },
+  "devDependencies": {
+    "cross-env": "^5.0.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
+  }
+}

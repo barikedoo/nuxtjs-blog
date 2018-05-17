@@ -8,8 +8,8 @@
       </v-layout>
 
       <v-layout row wrap>
-          <v-flex xs2>
-              <PostPreview isAdmin></PostPreview>
+          <v-flex xs2 v-for="post in loadedPosts" :key="post.id" class="ma-1">
+              <PostPreview isAdmin :post="post"></PostPreview>
           </v-flex>
       </v-layout>
   </div>
@@ -23,6 +23,12 @@ export default {
         PostPreview
     },
     layout: 'admin',
+
+    computed: {
+        loadedPosts() {
+            return this.$store.getters.loadedPosts;
+        }
+    }
 }
 </script>
 

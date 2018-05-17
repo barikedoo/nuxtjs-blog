@@ -1,31 +1,35 @@
 <template>
     <nuxt-link :to="postLink">
         <v-card>
-            <v-card-media src="https://picsum.photos/200/200/?random" height="200"></v-card-media>
-            <h3 class="pa-2 text-xs-center">Post Title</h3>
-            <p class="text-xs-right pt-3 pr-2">Added: 22.03.2018</p>
+            <v-card-media :src="post.thumbnailLink" height="200"></v-card-media>
+            <h3 class="pa-2 text-xs-center">{{post.title}}</h3>
+            <p class="pl-3">{{post.previewText}}</p>
+            <p class="text-xs-right pt-3 pr-2 mb-0">Added: {{post.added}}</p>
         </v-card>
     </nuxt-link>
 </template>
 
 <script>
 export default {
-    name: 'PostPreview',
-    props: {
-        isAdmin: {
-            type:Boolean,
-            default: false,
-            // required: true
-        }
+  name: "PostPreview",
+  props: {
+    isAdmin: {
+      type: Boolean,
+      default: false
+      // required: true
     },
-    computed: {
-        postLink() {
-            return this.isAdmin ? `/admin/ ${this.id}` : `/posts/ ${this.id}`
-        }
+    post: {
+      type: Object
+      // required: true
     }
+  },
+  computed: {
+    postLink() {
+      return this.isAdmin ? "/admin/" + this.post.id : "/posts/" + this.post.id;
+    }
+  }
 };
 </script>
 
 <style>
-
 </style>

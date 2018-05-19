@@ -14,6 +14,13 @@ const createStore = () => {
     mutations: {
       _setPosts(state, posts) {
         state.loadedPosts = posts;
+      },
+      _addNewPost(state, post) {
+        state.loadedPosts.push(post);
+      },
+      _updatePost(state, post) {
+        let postIndex = state.loadedPosts.findIndex((item) => item.id == post.id );
+        state.loadedPosts[postIndex] = post;
       }
     },
     actions: {
@@ -31,6 +38,12 @@ const createStore = () => {
 
       setPosts(context, posts) {
         context.commit('_setPosts', posts);
+      },
+      addNewPost(context, post) {
+        context.commit('_addNewPost',post);
+      },
+      updatePost(context, post) {
+        context.commit('_updatePost', post)
       }
     }
   })

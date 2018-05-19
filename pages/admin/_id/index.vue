@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 import AdminPostForm from "@/components/admin/AdminPostForm";
 
 export default {
@@ -34,14 +34,20 @@ export default {
   },
   methods: {
     onSubmitted(editedPost) {
-      axios.put("https://nuxt-blog-d474b.firebaseio.com/posts/" +
-          this.$route.params.id +
-          ".json", editedPost)
-          .then(response => {
-            alert('This post edited successfully');
-            this.$router.push('/admin');
-          })
-          .catch(error => console.log(error))
+      this.editedPost = editedPost;
+      axios
+        .put(
+          "https://nuxt-blog-d474b.firebaseio.com/posts/" +
+            this.$route.params.id +
+            ".json",
+          editedPost
+        )
+        .then(response => {
+          alert("This post edited successfully");
+          this.$store.dispatch('updatePost', {...this.editedPost, id: this.$route.params.id});
+          this.$router.push("/admin");
+        })
+        .catch(error => console.log(error));
     }
   }
 };

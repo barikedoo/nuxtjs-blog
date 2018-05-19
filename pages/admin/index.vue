@@ -16,22 +16,21 @@
 </template>
 
 <script>
-import PostPreview from '@/components/posts/PostPreview'
+import PostPreview from "@/components/posts/PostPreview";
 
 export default {
-    components: {
-        PostPreview
-    },
-    layout: 'admin',
+  components: {
+    PostPreview
+  },
+  layout: "admin",
 
-    computed: {
-        loadedPosts() {
-            return this.$store.getters.loadedPosts;
-        }
+  computed: {
+    loadedPosts() {
+      return this.$store.getters.loadedPosts;
     }
-}
+  }
+};
 </script>
 
 <style>
-
 </style>

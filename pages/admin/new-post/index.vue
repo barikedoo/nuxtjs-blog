@@ -19,14 +19,20 @@ export default {
   layout: "admin",
   methods: {
     onSubmitted(newPost) {
+      this.newPost = newPost;
       axios
         .post("https://nuxt-blog-d474b.firebaseio.com/posts.json", {
           ...newPost,
           added: new Date()
         })
-        .then(result => {
-          alert('New post added');
-          this.$router.push('/admin');
+        .then(response => {
+          this.$store.dispatch("addNewPost", {
+            ...this.newPost,
+            id: response.data.name
+          });
+          console.log(response);
+          alert("New post added");
+          this.$router.push("/admin");
         })
         .catch(error => console.log(error));
     }

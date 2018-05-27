@@ -10,11 +10,7 @@
 </template>
 
 <script>
-import PostPreview from "@/components/posts/PostPreview";
 export default {
-  components: {
-    PostPreview
-  },
   computed: {
     loadedPosts() {
       return this.$store.getters.loadedPosts;
@@ -24,5 +20,4 @@ export default {
 </script>
 
 <style>
-
 </style>

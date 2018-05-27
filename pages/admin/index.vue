@@ -16,13 +16,14 @@
 </template>
 
 <script>
-import PostPreview from "@/components/posts/PostPreview";
 
 export default {
-  components: {
-    PostPreview
-  },
+
   layout: "admin",
+
+  head: {
+    title: 'Admin area'
+  },
 
   computed: {
     loadedPosts() {

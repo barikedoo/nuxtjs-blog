@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import AdminPostForm from "@/components/admin/AdminPostForm";
 
 export default {
@@ -19,8 +19,8 @@ export default {
   },
   layout: "admin",
   asyncData(context) {
-    return axios
-      .get(
+    return context.app.$axios
+      .$get(
         "https://nuxt-blog-d474b.firebaseio.com/posts/" +
           context.params.id +
           ".json"

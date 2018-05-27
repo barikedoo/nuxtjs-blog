@@ -13,7 +13,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: 'Test blog project using Nuxt.js' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -25,27 +25,40 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#FFFFFF' },
+  loading: { color: '#FFFFFF', height: '3px' },
+  
+  // If you are using SPA mode - you can turn on build-in spinner by doing that
+  loadingIndicator: {
+    name: 'circle'
+  },
 
   /*
   ** Global CSS
   */
   css: [
-    'vuetify/src/stylus/main.styl'
+    'vuetify/src/stylus/main.styl',
+    '~assets/styles/main.css'
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify'
+    '@/plugins/vuetify',
+    '~plugins/shared-components',
+    '~plugins/date-filter'
   ],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios'
   ],
+
+  axios: {
+    baseURL: 'https://nuxt-blog-d474b.firebaseio.com'
+  },
 
   /*
   ** Build configuration
@@ -67,5 +80,9 @@ module.exports = {
         ]
       }
     }
+  },
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
   }
 }

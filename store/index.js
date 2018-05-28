@@ -1,5 +1,4 @@
 import Vuex from 'vuex'
-import axios from 'axios'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -25,11 +24,11 @@ const createStore = () => {
     },
     actions: {
       nuxtServerInit(vuexContext, context) {
-        return axios.get('https://nuxt-blog-d474b.firebaseio.com/posts.json')
+        return context.app.$axios.$get('/posts.json')
           .then(response => {
             let postsArray = [];
-            for (let key in response.data) {
-              postsArray.push({...response.data[key], id : key})
+            for (let key in response) {
+              postsArray.push({...response[key], id : key})
             }
             vuexContext.commit('_setPosts', postsArray )
           })

@@ -57,7 +57,8 @@ module.exports = {
   ],
 
   axios: {
-    baseURL: 'https://nuxt-blog-d474b.firebaseio.com'
+    baseURL: 'https://nuxt-blog-d474b.firebaseio.com',
+    credentials: false
   },
 
   /*
@@ -84,5 +85,8 @@ module.exports = {
   transition: {
     name: 'fade',
     mode: 'out-in'
+  },
+  env: {
+    fbAPIKey: 'AIzaSyAqu__6wn4_YxoVo1JTyUEx81jOaY9ULYw'
   }
 }

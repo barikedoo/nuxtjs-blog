@@ -20,15 +20,15 @@ export default {
   methods: {
     onSubmitted(newPost) {
       this.newPost = newPost;
-      axios
-        .post("https://nuxt-blog-d474b.firebaseio.com/posts.json", {
+      this.$axios
+        .$post("/posts.json", {
           ...newPost,
           added: new Date()
         })
         .then(response => {
           this.$store.dispatch("addNewPost", {
             ...this.newPost,
-            id: response.data.name
+            id: response.name
           });
           console.log(response);
           alert("New post added");

@@ -21,6 +21,9 @@ export default {
   data() {
     return {};
   },
+
+  middleware: 'log',
+
   computed: {
     loadedPosts() {
       return this.$store.getters.loadedPosts;

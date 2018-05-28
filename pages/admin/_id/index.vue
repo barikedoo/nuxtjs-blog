@@ -21,13 +21,13 @@ export default {
   asyncData(context) {
     return context.app.$axios
       .$get(
-        "https://nuxt-blog-d474b.firebaseio.com/posts/" +
+        "posts/" +
           context.params.id +
           ".json"
       )
       .then(response => {
         return {
-          loadedPost: response.data
+          loadedPost: response
         };
       })
       .catch(error => context.error(error));
@@ -35,16 +35,16 @@ export default {
   methods: {
     onSubmitted(editedPost) {
       this.editedPost = editedPost;
-      axios
-        .put(
-          "https://nuxt-blog-d474b.firebaseio.com/posts/" +
+      this.$axios
+        .$put(
+          "/posts/" +
             this.$route.params.id +
             ".json",
           editedPost
         )
         .then(response => {
-          alert("This post edited successfully");
           this.$store.dispatch('updatePost', {...this.editedPost, id: this.$route.params.id});
+          alert("This post edited successfully");
           this.$router.push("/admin");
         })
         .catch(error => console.log(error));

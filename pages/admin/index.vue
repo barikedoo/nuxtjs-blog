@@ -16,13 +16,11 @@
 </template>
 
 <script>
-
 export default {
-
   layout: "admin",
-
+  middleware: "auth",
   head: {
-    title: 'Admin area'
+    title: "Admin area"
   },
 
   computed: {

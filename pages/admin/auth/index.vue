@@ -40,7 +40,7 @@ export default {
         email: "",
         password: ""
       },
-      isLogin: false,
+      isLogin: true,
       valid: false,
       e1: true,
       email: "",
@@ -54,18 +54,14 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$axios
-        .$post(
-          "https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=" +
-            process.env.fbAPIKey,
-          {
-            email: this.currentUser.email,
-            password: this.currentUser.password,
-            returnSecureToken: true
-          }
-        )
-        .then(response => console.log(response))
-        .catch(error => console.log(error));
+      this.$store.dispatch('authenticate', {
+        email: this.currentUser.email,
+        password: this.currentUser.password,
+        isLogin: this.isLogin
+      }).then(response => {
+        console.log(response)
+        this.$router.push('/admin')
+      })
     }
   }
 };

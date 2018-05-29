@@ -17,24 +17,13 @@ export default {
     AdminPostForm
   },
   layout: "admin",
+  middleware : 'auth',
   methods: {
     onSubmitted(newPost) {
-      this.newPost = newPost;
-      this.$axios
-        .$post("/posts.json", {
-          ...newPost,
-          added: new Date()
-        })
-        .then(response => {
-          this.$store.dispatch("addNewPost", {
-            ...this.newPost,
-            id: response.name
-          });
-          console.log(response);
-          alert("New post added");
-          this.$router.push("/admin");
-        })
-        .catch(error => console.log(error));
+      this.$store.dispatch('addNewPost', {...newPost, }).then(()=>{
+        alert('New post was added');
+        this.$router.push('/admin')
+      })
     }
   }
 };

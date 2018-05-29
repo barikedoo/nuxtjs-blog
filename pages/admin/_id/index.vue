@@ -18,6 +18,7 @@ export default {
     AdminPostForm
   },
   layout: "admin",
+  middleware : 'auth',
   asyncData(context) {
     return context.app.$axios
       .$get(
@@ -34,20 +35,9 @@ export default {
   },
   methods: {
     onSubmitted(editedPost) {
-      this.editedPost = editedPost;
-      this.$axios
-        .$put(
-          "/posts/" +
-            this.$route.params.id +
-            ".json",
-          editedPost
-        )
-        .then(response => {
-          this.$store.dispatch('updatePost', {...this.editedPost, id: this.$route.params.id});
-          alert("This post edited successfully");
-          this.$router.push("/admin");
-        })
-        .catch(error => console.log(error));
+      this.$store.dispatch('updatePost', {...editedPost, id:this.$route.params.id}).then(() =>{
+        this.$router.push('/admin')
+      })
     }
   }
 };

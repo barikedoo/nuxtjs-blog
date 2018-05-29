@@ -10,20 +10,14 @@
 </template>
 
 <script>
-
 export default {
   asyncData(context) {
     return context.app.$axios
-      .$get(
-        "/posts/" +
-          context.params.id +
-          ".json"
-      )
+      .$get("/posts/" + context.params.id + ".json")
       .then(response => {
-          console.log(response);
+        console.log(response);
         return {
           loadedPost: response
-        
         };
       })
       .catch(error => context.error(error));
@@ -33,7 +27,7 @@ export default {
 
 <style scoped>
 .post-author:hover {
-    cursor: pointer;
-    color:blue;
+  cursor: pointer;
+  color: blue;
 }
 </style>

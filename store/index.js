@@ -99,33 +99,25 @@ const createStore = () => {
           .then(response => {
             Cookies.set("token", response.idToken);
             Cookies.set("tokenExpirationDate",
-              new Date().getTime() + response.expiresIn * 1000);
+              new Date().getTime() + +response.expiresIn * 1000);
 
             context.commit("_setToken", response.idToken);
 
             localStorage.setItem("token", response.idToken);
             localStorage.setItem(
               "tokenExpirationDate",
-              new Date().getTime() + response.expiresIn * 1000
+              new Date().getTime() + +response.expiresIn * 1000
             );
 
 
-            context.dispatch("setLogoutTimer", response.expiresIn * 1000);
           })
           .catch(error => console.log(error));
-      },
-
-      setLogoutTimer(context, duration) {
-        setTimeout(() => {
-          context.commit("_clearToken");
-        }, duration);
       },
 
       initAuth(context, request) {
         let token, tokenExpirationDate;
 
         if (request) {
-
           console.log('there are cookies');
 
           if (!request.headers.cookie) {
@@ -136,25 +128,28 @@ const createStore = () => {
           token = request.headers.cookie.split(';').find(item => item.trim().startsWith('token=')).split('=')[1];
           tokenExpirationDate = request.headers.cookie.split(';').find(item => item.trim().startsWith('tokenExpirationDate=')).split('=')[1];
 
-          console.log({
-            token: token
-          });
-
           if (!token) {
             return;
           }
 
-        } else {;
-
+        } else {
           token = localStorage.getItem("token");
-          tokenExpirationDate = localStorage.getItem("tokenExpiration");
+          tokenExpirationDate = localStorage.getItem("tokenExpirationDate");
+        };
 
-        }
+
         if (new Date().getTime() > +tokenExpirationDate || !token) {
+          context.dispatch('logout');
           return;
         }
-        context.dispatch('setLogoutTimer', +tokenExpirationDate - new Date().getTime());
         context.commit("_setToken", token);
+      },
+      logout(context) {
+        context.commit('_clearToken');
+        Cookies.remove('token');
+        Cookies.remove('tokenExpirationDate');
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenExpirationDate');
       }
     }
   });

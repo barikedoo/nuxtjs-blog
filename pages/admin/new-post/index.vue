@@ -17,13 +17,13 @@ export default {
     AdminPostForm
   },
   layout: "admin",
-  middleware : 'auth',
+  middleware: ["check-token", "auth"],
   methods: {
     onSubmitted(newPost) {
-      this.$store.dispatch('addNewPost', {...newPost, }).then(()=>{
-        alert('New post was added');
-        this.$router.push('/admin')
-      })
+      this.$store.dispatch("addNewPost", { ...newPost }).then(() => {
+        alert("New post was added");
+        this.$router.push("/admin");
+      });
     }
   }
 };

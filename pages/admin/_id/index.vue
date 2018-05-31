@@ -18,7 +18,7 @@ export default {
     AdminPostForm
   },
   layout: "admin",
-  middleware : 'auth',
+  middleware : ['check-token','auth'],
   asyncData(context) {
     return context.app.$axios
       .$get(

@@ -1,4 +1,5 @@
-import Vuex from 'vuex'
+import Vuex from "vuex";
+import Cookies from 'js-cookie'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -22,33 +23,37 @@ const createStore = () => {
         state.loadedPosts.push(post);
       },
       _updatePost(state, post) {
-        let postIndex = state.loadedPosts.findIndex((item) => item.id == post.id);
+        let postIndex = state.loadedPosts.findIndex(item => item.id == post.id);
         state.loadedPosts[postIndex] = post;
       },
       _setToken(state, token) {
         state.token = token;
       },
       _clearToken(state) {
-        state.token = null
+        state.token = null;
       }
     },
+
+
     actions: {
       nuxtServerInit(vuexContext, context) {
-        return context.app.$axios.$get('/posts.json')
+        return context.app.$axios
+          .$get("/posts.json")
           .then(response => {
             let postsArray = [];
             for (let key in response) {
-              postsArray.push({ ...response[key],
+              postsArray.push({
+                ...response[key],
                 id: key
-              })
+              });
             }
-            vuexContext.commit('_setPosts', postsArray)
+            vuexContext.commit("_setPosts", postsArray);
           })
           .catch(error => context.error(error));
       },
 
       setPosts(context, posts) {
-        context.commit('_setPosts', posts);
+        context.commit("_setPosts", posts);
       },
 
       addNewPost(context, post) {
@@ -59,25 +64,22 @@ const createStore = () => {
           })
           .then(response => {
             console.log(response);
-            context.commit('_addNewPost', { ...post,
+            context.commit("_addNewPost", {
+              ...post,
               id: response.name
             });
-          })
+          });
       },
 
       updatePost(context, postData) {
         return this.$axios
-          .$put(
-            "/posts/" +
-            postData.id +
-            ".json?auth=" + context.state.token, {
-              ...postData
-            }
-          ).then(response => {
-            console.log(response);
-            context.commit('_updatePost', postData)
+          .$put("/posts/" + postData.id + ".json?auth=" + context.state.token, {
+            ...postData
           })
-
+          .then(response => {
+            console.log(response);
+            context.commit("_updatePost", postData);
+          });
       },
 
       authenticate(context, authData) {
@@ -95,19 +97,67 @@ const createStore = () => {
             returnSecureToken: true
           })
           .then(response => {
-            console.log(response)
-            context.commit('_setToken', response.idToken);
-            context.dispatch('setLogoutTimer', response.expiresIn * 1000);
+            Cookies.set("token", response.idToken);
+            Cookies.set("tokenExpirationDate",
+              new Date().getTime() + response.expiresIn * 1000);
+
+            context.commit("_setToken", response.idToken);
+
+            localStorage.setItem("token", response.idToken);
+            localStorage.setItem(
+              "tokenExpirationDate",
+              new Date().getTime() + response.expiresIn * 1000
+            );
+
+
+            context.dispatch("setLogoutTimer", response.expiresIn * 1000);
           })
           .catch(error => console.log(error));
       },
+
       setLogoutTimer(context, duration) {
         setTimeout(() => {
-          context.commit('_clearToken')
+          context.commit("_clearToken");
         }, duration);
+      },
+
+      initAuth(context, request) {
+        let token, tokenExpirationDate;
+
+        if (request) {
+
+          console.log('there are cookies');
+
+          if (!request.headers.cookie) {
+            console.log('no cookies')
+            return;
+          }
+
+          token = request.headers.cookie.split(';').find(item => item.trim().startsWith('token=')).split('=')[1];
+          tokenExpirationDate = request.headers.cookie.split(';').find(item => item.trim().startsWith('tokenExpirationDate=')).split('=')[1];
+
+          console.log({
+            token: token
+          });
+
+          if (!token) {
+            return;
+          }
+
+        } else {;
+
+          token = localStorage.getItem("token");
+          tokenExpirationDate = localStorage.getItem("tokenExpiration");
+
+        }
+        if (new Date().getTime() > +tokenExpirationDate || !token) {
+          return;
+        }
+        context.dispatch('setLogoutTimer', +tokenExpirationDate - new Date().getTime());
+        context.commit("_setToken", token);
       }
     }
-  })
-}
+  });
+};
 
-export default createStore
+export default createStore;

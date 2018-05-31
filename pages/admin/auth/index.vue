@@ -59,7 +59,6 @@ export default {
         password: this.currentUser.password,
         isLogin: this.isLogin
       }).then(response => {
-        console.log(response)
         this.$router.push('/admin')
       })
     }

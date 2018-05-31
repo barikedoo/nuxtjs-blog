@@ -18,7 +18,7 @@
 <script>
 export default {
   layout: "admin",
-  middleware: "auth",
+  middleware : ['check-token','auth'],
   head: {
     title: "Admin area"
   },

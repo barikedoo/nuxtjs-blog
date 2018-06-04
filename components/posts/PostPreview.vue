@@ -16,11 +16,9 @@ export default {
     isAdmin: {
       type: Boolean,
       default: false
-      // required: true
     },
     post: {
       type: Object
-      // required: true
     }
   },
   computed: {

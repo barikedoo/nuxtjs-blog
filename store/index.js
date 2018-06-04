@@ -148,11 +148,14 @@ const createStore = () => {
         context.commit('_clearToken');
         Cookies.remove('token');
         Cookies.remove('tokenExpirationDate');
-        localStorage.removeItem('token');
-        localStorage.removeItem('tokenExpirationDate');
+
+        if (process.client) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('tokenExpirationDate');
+        }
       }
     }
   });
 };
 
-export default createStore;
+export default createStore; 
